@@ -52,6 +52,7 @@ class Level:
         # update and draw the game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        debug(self.player.status)
 
 class YsortCameraGroup(pygame.sprite.Group):
     """This sprite group is going to fonction as a camera
