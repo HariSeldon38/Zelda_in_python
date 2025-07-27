@@ -11,7 +11,7 @@ class Level:
         self.display_surface = pygame.display.get_surface()
 
         # sprite group setup
-        self.visible_sprites = pygame.sprite.Group()
+        self.visible_sprites = YsortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
 
         # sprite setup
@@ -29,6 +29,31 @@ class Level:
 
     def run(self):
         # update and draw the game
-        self.visible_sprites.draw(self.display_surface)
+        self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        debug(self.player.direction)
+
+class YsortCameraGroup(pygame.sprite.Group):
+    """This sprite group is going to fonction as a camera
+    and we are going to sort the sprites by Y coordinate and give them some overlap
+    ie we want sprites with lower Y value (upper) to be displayed first
+    and then the rows bellow will overlap the previous ones"""
+
+    def __init__(self):
+        super().__init__()
+
+        #general setup
+        self.display_surface = pygame.display.get_surface()
+        self.half_width = self.display_surface.get_size()[0] //2
+        self.half_height = self.display_surface.get_size()[1] //2
+        self.offset = pygame.math.Vector2()
+
+    def custom_draw(self, player):
+
+        #getting the offset
+        self.offset.x = -player.rect.centerx + self.half_width # we want player.rect.centerx displayed in pos self.half_width
+        self.offset.y = -player.rect.centery + self.half_height
+
+        for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
+            offseted_position = sprite.rect.topleft + self.offset #tuple
+
+            self.display_surface.blit(sprite.image, offseted_position)
