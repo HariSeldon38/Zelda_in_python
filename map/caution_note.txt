@@ -1,0 +1,21 @@
+The instructions are uncomplete to use Tiled with this project and only the video.
+I did gather all I can to make it work eventually but it is not perfect.
+
+Some explanation on how the layers should be created in Tiled :
+
+- Floor + Detail layer should be exported from Tiled as one png containing both layer (make the other one invisible)
+	that mean anything could be use as tile in these layers, it doesn't matter
+
+ALL OTHER LAYER SHOULD BE EXPORTED IN CSV
+
+- FloorBlock layer contains the boundaries of the map that the player would not be able to cross
+	any tile can work as boundary, the code only check if the tile id is != -1 (which in Tiled means empty tile if I undestand correctly)
+	just do not use tile with same color as the background otherwise you will have unexpected boundaries (to check that aply background in top layer to see if gray tile are overimpressed)
+
+- Entities : idk at this point
+
+- Grass : every non-empty tile will be used indeferently in the code and replaced by a random graphics
+	that has nothing to do with the one used as a tile, so just use a single tile like FLoorBlock
+
+- Object : only use Objects.tsx tile set as each of the id of the tiles are linked to the corresponding png file in the graphics/objects folder
+	the code use the csv file for the object layer and fetch the corresponding png file.
