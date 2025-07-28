@@ -1,22 +1,26 @@
 import pygame
+from random import choice
 from settings import *
 from support import *
 from player import Player
 from tile import Tile
-from random import choice
-from debug import debug
+from weapon import Weapon
+
 
 class Level:
     def __init__(self):
 
-        # get display surf from anywhere in the code
+        #get display surf from anywhere in the code
         self.display_surface = pygame.display.get_surface()
 
-        # sprite group setup
+        #sprite group setup
         self.visible_sprites = YsortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
 
-        # sprite setup
+        #attack sprites
+        self.current_attack =None
+
+        #sprite setup
         self.create_map()
 
     def create_map(self):
@@ -45,14 +49,21 @@ class Level:
                             surf = graphics['objects'][int(square)]
                             Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'object', surf)
 
-        self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites)
+        self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites, self.create_attack, self.destroy_attack)
+
+    def create_attack(self):
+        self.current_attack = Weapon(self.player, [self.visible_sprites])
+
+    def destroy_attack(self):
+        if self.current_attack:
+            self.current_attack.kill() #kill is a pygame fct that delete a sprite (so it seems)
+        self.current_attack = None
 
 
     def run(self):
         # update and draw the game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        debug(self.player.status)
 
 class YsortCameraGroup(pygame.sprite.Group):
     """This sprite group is going to fonction as a camera
