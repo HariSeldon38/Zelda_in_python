@@ -17,7 +17,6 @@ class Player(pygame.sprite.Sprite):
 
         #movement
         self.direction = pygame.math.Vector2()
-        self.speed = 5
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
@@ -30,7 +29,19 @@ class Player(pygame.sprite.Sprite):
         self.weapon = list(weapon_data.keys())[self.weapon_index]
         self.can_switch_weapon = True
         self.weapon_switch_time = None
-        self.weapon_switch_cooldown = 200
+        self.weapon_switch_cooldown = 600
+
+        #stats
+        self.stats = {'health': 100, 'energy': 60, 'attack': 10, 'magic': 4, 'speed': 5}
+        self.health = self.stats['health']
+        self.energy = self.stats['energy'] -20
+        self.speed = self.stats['speed']
+        self.xp = 1312
+
+        #damage
+        self.can_lose_hp = True
+        self.lose_hp_time = None
+        self.invulnerability = 200
 
 
     def import_player_assets(self):
@@ -78,6 +89,12 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_c]:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
+
+            #automutilation input
+            if keys[pygame.K_t]: #and can_lose_hp
+                #self.can_lose_hp = False
+                #self.lose_hp_time = pygame.time.get_ticks()
+                self.health -= HEALH_T_DECREASE_AMOUNT
 
             if keys[pygame.K_e] and self.can_switch_weapon:
                 self.can_switch_weapon = False
@@ -145,6 +162,9 @@ class Player(pygame.sprite.Sprite):
             if current_time - self.weapon_switch_time >= self.weapon_switch_cooldown:
                 self.can_switch_weapon = True
 
+        if not self.can_lose_hp:
+            if current_time - self.lose_hp_time >= self.invulnerability:
+                self.can_lose_hp = True
 
     def animate(self):
         animation = self.animations[self.status]

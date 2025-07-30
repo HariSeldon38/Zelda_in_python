@@ -5,7 +5,7 @@ from support import *
 from player import Player
 from tile import Tile
 from weapon import Weapon
-
+from ui import UI
 
 class Level:
     def __init__(self):
@@ -18,10 +18,13 @@ class Level:
         self.obstacle_sprites = pygame.sprite.Group()
 
         #attack sprites
-        self.current_attack =None
+        self.current_attack = None
 
         #sprite setup
         self.create_map()
+
+        #user interface
+        self.ui = UI()
 
     def create_map(self):
         layouts = {
@@ -59,11 +62,11 @@ class Level:
             self.current_attack.kill() #kill is a pygame fct that delete a sprite (so it seems)
         self.current_attack = None
 
-
     def run(self):
         # update and draw the game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        self.ui.display(self.player)
 
 class YsortCameraGroup(pygame.sprite.Group):
     """This sprite group is going to fonction as a camera
