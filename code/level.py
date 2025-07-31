@@ -2,9 +2,10 @@ import pygame
 from random import choice
 from settings import *
 from support import *
-from player import Player
 from tile import Tile
+from player import Player
 from weapon import Weapon
+from enemy import Enemy
 from ui import UI
 
 class Level:
@@ -30,11 +31,12 @@ class Level:
         layouts = {
             'boundary': import_csv_layout('../map/antoine_FloorBlocks.csv'),
             'grass': import_csv_layout('../map/antoine_Grass.csv'),
-            'object': import_csv_layout('../map/antoine_Objects.csv')
+            'object': import_csv_layout('../map/antoine_Objects.csv'),
+            'entities': import_csv_layout('../map/antoine_Entities.csv')
         }
         graphics = {
             'grass': import_folder('../graphics/grass'),
-            'objects': import_folder('../graphics/objects')
+            'objects': import_folder('../graphics/objects'),
         }
 
         for style, layout in layouts.items():
@@ -51,15 +53,23 @@ class Level:
                         if style == 'object':
                             surf = graphics['objects'][int(square)]
                             Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'object', surf)
+                        if style == 'entities':
+                            if square == '394':
+                                self.player = Player(
+                                    (x,y),
+                                    [self.visible_sprites],
+                                    self.obstacle_sprites,
+                                    self.create_attack,
+                                    self.destroy_attack,
+                                    self.create_magic,
+                                )
+                            else:
+                                if square == '390': monster_name = 'bamboo'
+                                elif square == '390': monster_name = 'spirit'
+                                elif square == '392': monster_name = 'raccoon'
+                                else: monster_name = 'squid'
 
-        self.player = Player(
-            (2000, 1430),
-            [self.visible_sprites],
-            self.obstacle_sprites,
-            self.create_attack,
-            self.destroy_attack,
-            self.create_magic,
-        )
+                                Enemy(monster_name, (x,y), [self.visible_sprites], self.obstacle_sprites)
 
     def create_attack(self):
         self.current_attack = Weapon(self.player, [self.visible_sprites])
@@ -78,6 +88,7 @@ class Level:
         # update and draw the game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        self.visible_sprites.enemy_update(self.player)
         self.ui.display(self.player)
 
 class YsortCameraGroup(pygame.sprite.Group):
@@ -113,3 +124,8 @@ class YsortCameraGroup(pygame.sprite.Group):
             offseted_position = sprite.rect.topleft + self.offset #tuple
 
             self.display_surface.blit(sprite.image, offseted_position)
+
+    def enemy_update(self, player):
+        enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
+        for enemy in enemy_sprites:
+            enemy.enemy_update(player)
