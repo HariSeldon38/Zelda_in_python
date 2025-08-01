@@ -7,6 +7,7 @@ from player import Player
 from weapon import Weapon
 from enemy import Enemy
 from ui import UI
+from particles import AnimationPlayer
 
 class Level:
     def __init__(self):
@@ -28,6 +29,9 @@ class Level:
 
         #user interface
         self.ui = UI()
+
+        #particles
+        self.animation_player = AnimationPlayer()
 
     def create_map(self):
         layouts = {
@@ -102,6 +106,8 @@ class Level:
                 if collision_sprites:
                     for target_sprite in collision_sprites:
                         if target_sprite.sprite_type == 'grass':
+                            pos = target_sprite.rect.center
+                            self.animation_player.create_grass_particles(pos, [self.visible_sprites])
                             target_sprite.kill()
                         elif target_sprite.sprite_type == 'enemy':
                             target_sprite.get_damage(self.player, attack_sprite.sprite_type)
