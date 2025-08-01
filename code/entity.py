@@ -1,9 +1,8 @@
 import pygame
+from math import sin
 from settings import *
 
 class Entity(pygame.sprite.Sprite):
-
-
 
     def __init__(self, groups):
         super().__init__(groups)
@@ -11,7 +10,6 @@ class Entity(pygame.sprite.Sprite):
         self.frame_index = 0
         self.animation_speed = 0.1
         self.direction = pygame.math.Vector2()
-
 
     def move(self, speed):
         if self.direction.magnitude() != 0:
@@ -38,3 +36,7 @@ class Entity(pygame.sprite.Sprite):
                         self.hitbox.bottom = sprite.hitbox.top
                     if self.direction.y < 0: #moving up
                         self.hitbox.top = sprite.hitbox.bottom
+
+    def wave_value(self):
+        value = sin(0.05*pygame.time.get_ticks())
+        return 245 * value + 10
