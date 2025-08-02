@@ -6,9 +6,10 @@ class Tile(pygame.sprite.Sprite):
         super().__init__(groups)
         self.sprite_type = sprite_type
         y_offset = HITBOX_OFFSET[sprite_type]
+        x_offset = 0 if sprite_type=='invisible' else -40
         self.image = surface
         if sprite_type == 'object': #all object are twice taller than tile size
             self.rect = self.image.get_rect(topleft=(pos[0], pos[1] - TILESIZE))
         else:
             self.rect = self.image.get_rect(topleft = pos)
-        self.hitbox = self.rect.inflate(-40,y_offset)
+        self.hitbox = self.rect.inflate(x_offset,y_offset)

@@ -79,7 +79,7 @@ class Level:
                                 )
                             else:
                                 if square == '390': monster_name = 'bamboo'
-                                elif square == '390': monster_name = 'spirit'
+                                elif square == '391': monster_name = 'spirit'
                                 elif square == '392': monster_name = 'raccoon'
                                 else: monster_name = 'squid'
 
