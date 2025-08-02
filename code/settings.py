@@ -22,7 +22,13 @@ WATER_COLOR = '#71ddee'
 HEALTH_COLOR = 'red'
 ENERGY_COLOR = 'blue'
 
-HEALH_T_DECREASE_AMOUNT = 0.2
+#upgrade menu
+TEXT_COLOR_SELECTED = '#111111'
+BAR_COLOR = '#EEEEEE'
+BAR_COLOR_SELECTED = '#111111'
+UPGRADE_BG_COLOR_SELECTED = '#EEEEEE'
+
+HEALH_T_DECREASE_AMOUNT = 0.2 #health lost by frames when pressing "T"
 
 #weapons
 weapon_data = {
@@ -35,8 +41,7 @@ weapon_data = {
 #magic
 magic_data = {
 	'flame': {'strenght': 5, 'cost': 20, 'graphic': '../graphics/particles/flame/fire.png'},
-	'heal': {'strenght': 20, 'cost': 10, 'graphic': '../graphics/particles/heal/heal.png'}
-}
+	'heal': {'strenght': 20, 'cost': 10, 'graphic': '../graphics/particles/heal/heal.png'}}
 
 #enemy
 monster_data = {
@@ -44,3 +49,10 @@ monster_data = {
 	'raccoon': {'health': 300,'exp':250,'damage':40,'attack_type': 'claw',  'attack_sound':'../audio/attack/claw.wav','speed': 2, 'resistance': 3, 'attack_radius': 120, 'notice_radius': 400},
 	'spirit': {'health': 100,'exp':110,'damage':8,'attack_type': 'thunder', 'attack_sound':'../audio/attack/fireball.wav', 'speed': 4, 'resistance': 3, 'attack_radius': 60, 'notice_radius': 350},
 	'bamboo': {'health': 70,'exp':120,'damage':6,'attack_type': 'leaf_attack', 'attack_sound':'../audio/attack/slash.wav', 'speed': 3, 'resistance': 3, 'attack_radius': 50, 'notice_radius': 300}}
+
+HITBOX_OFFSET = {
+	'player': -29,
+	'object': -95,
+	'grass': -25,
+	'invisible': 0
+}

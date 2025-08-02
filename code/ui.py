@@ -61,14 +61,14 @@ class UI:
         return bg_rect
 
     def show_weapon_overlay(self, weapon_index, has_switched):
-        bg_rect = self.show_selection_box(80, 710, has_switched)
+        bg_rect = self.show_selection_box(87, 710, has_switched)
         weapon_surf = self.weapon_graphics[weapon_index]
         weapon_rect = weapon_surf.get_rect(center = bg_rect.center)
 
         self.display_surface.blit(weapon_surf, weapon_rect)
 
     def show_magic_overlay(self, magic_index, has_switched):
-        bg_rect = self.show_selection_box(10, 700, has_switched)
+        bg_rect = self.show_selection_box(17, 700, has_switched)
         magic_surf = self.magic_graphics[magic_index]
         magic_rect = magic_surf.get_rect(center = bg_rect.center)
 
@@ -79,7 +79,7 @@ class UI:
         self.show_bar(player.energy, player.stats['energy'], self.energy_bar_rect, ENERGY_COLOR)
         self.show_xp(player.xp)
 
-        self.show_selection_box(150, 700)
+        self.show_selection_box(157, 700) # = empty overlay for now
         self.show_magic_overlay(player.magic_index, not player.can_switch_magic)
         self.show_weapon_overlay(player.weapon_index, not player.can_switch_weapon)
 

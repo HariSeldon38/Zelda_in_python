@@ -8,7 +8,7 @@ class Player(Entity):
         super().__init__(groups)
         self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(-29,-29)
+        self.hitbox = self.rect.inflate(HITBOX_OFFSET['player'],HITBOX_OFFSET['player'])
 
         #graphics setup
         self.import_player_assets()
@@ -41,10 +41,12 @@ class Player(Entity):
 
         #stats
         self.stats = {'health': 100, 'energy': 60, 'attack': 5, 'magic': 2, 'speed': 5}
+        self.max_stats = {'health': 300, 'energy': 160, 'attack': 15, 'magic': 8, 'speed': 10}
+        self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic': 100, 'speed': 100}
         self.health = self.stats['health']
         self.energy = self.stats['energy']
         self.speed = self.stats['speed']
-        self.xp = 1312
+        self.xp = 13120
 
         #damage timer
         self.vulnerable = True
@@ -197,6 +199,12 @@ class Player(Entity):
         spell_damage = magic_data[self.magic]['strenght']
         return base_damage + spell_damage
 
+    def get_value_by_index(self, index):
+        return list(self.stats.values())[index]
+
+    def get_cost_by_index(self, index):
+        return list(self.upgrade_cost.values())[index]
+
     def energy_recovery(self):
         if self.energy < self.stats['energy']:
             self.energy += 1 #0.02
@@ -206,6 +214,6 @@ class Player(Entity):
         self.cooldowns()
         self.get_status()
         self.animate()
-        self.move(self.speed)
+        self.move(self.stats['speed'])
         self.energy_recovery()
 

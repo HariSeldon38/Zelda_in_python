@@ -4,7 +4,7 @@ from support import *
 from entity import Entity
 
 class Enemy(Entity):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, damage_player, trigger_death_particles):
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, damage_player, trigger_death_particles, add_xp):
         super().__init__(groups)
         self.sprite_type = 'enemy'
 
@@ -22,7 +22,7 @@ class Enemy(Entity):
         self.monster_name = monster_name
         monster_info = monster_data[self.monster_name]
         self.health = monster_info['health']
-        self.exp = monster_info['exp']
+        self.xp = monster_info['exp']
         self.speed = monster_info['speed']
         self.attack_damage = monster_info['damage']
         self.resistance = monster_info['resistance']
@@ -36,6 +36,7 @@ class Enemy(Entity):
         self.attack_time = None
         self.damage_player = damage_player
         self.trigger_death_particles = trigger_death_particles
+        self.add_xp = add_xp
 
         #invincibility timer
         self.vulnerable = True
@@ -83,9 +84,7 @@ class Enemy(Entity):
         if self.vulnerable:
             self.direction = self.get_player_distance_direction(player)[1]
             if sprite_type == 'weapon':
-                print(self.health)
                 self.health -= player.get_full_weapon_damage()
-                print(self.health)
             if sprite_type == 'flame':
                 self.health -= player.get_full_magic_damage()
 
@@ -100,6 +99,7 @@ class Enemy(Entity):
         if self.health <= 0:
             self.kill()
             self.trigger_death_particles(self.rect.center, self.monster_name)
+            self.add_xp(self.xp)
 
     def get_player_distance_direction(self, player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
