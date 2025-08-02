@@ -33,7 +33,6 @@ class Player(Entity):
 
         #magic
         self.create_magic = create_magic
-        #self.destroy_attack = destroy_attack
         self.magic_index = 0
         self.magic = list(magic_data.keys())[self.magic_index]
         self.can_switch_magic = True
@@ -41,7 +40,7 @@ class Player(Entity):
         self.magic_switch_cooldown = 600
 
         #stats
-        self.stats = {'health': 100, 'energy': 60, 'attack': 10, 'magic': 4, 'speed': 5}
+        self.stats = {'health': 100, 'energy': 60, 'attack': 5, 'magic': 2, 'speed': 5}
         self.health = self.stats['health']
         self.energy = self.stats['energy']
         self.speed = self.stats['speed']
@@ -193,10 +192,20 @@ class Player(Entity):
         weapon_damage = weapon_data[self.weapon]['damage']
         return base_damage + weapon_damage
 
+    def get_full_magic_damage(self):
+        base_damage = self.stats['magic']
+        spell_damage = magic_data[self.magic]['strenght']
+        return base_damage + spell_damage
+
+    def energy_recovery(self):
+        if self.energy < self.stats['energy']:
+            self.energy += 1 #0.02
+
     def update(self):
         self.input()
         self.cooldowns()
         self.get_status()
         self.animate()
         self.move(self.speed)
+        self.energy_recovery()
 
