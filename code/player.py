@@ -46,7 +46,7 @@ class Player(Entity):
         self.health = self.stats['health']
         self.energy = self.stats['energy']
         self.speed = self.stats['speed']
-        self.xp = 13120
+        self.xp = 1312
 
         #damage timer
         self.vulnerable = True
@@ -69,32 +69,31 @@ class Player(Entity):
             self.animations[animation] = import_folder(anim_path)
 
     def input(self):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_ESCAPE]:
+            pygame.quit()
+            sys.exit()
+
+        # movement input
+        if keys[pygame.K_UP] or keys[pygame.K_z]:
+            self.direction.y = -1
+            self.status = 'up'
+        elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            self.direction.y = 1
+            self.status = 'down'
+        else:
+            self.direction.y = 0
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            self.direction.x = 1
+            self.status = 'right'
+        elif keys[pygame.K_LEFT] or keys[pygame.K_q]:
+            self.direction.x = -1
+            self.status = 'left'
+        else:
+            self.direction.x = 0
 
         if not self.attacking:
-            keys = pygame.key.get_pressed()
-
-            if keys[pygame.K_ESCAPE]:
-                pygame.quit()
-                sys.exit()
-
-            #movement input
-            if keys[pygame.K_UP] or keys[pygame.K_z]:
-                self.direction.y = -1
-                self.status = 'up'
-            elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-                self.direction.y = 1
-                self.status = 'down'
-            else:
-                self.direction.y = 0
-
-            if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-                self.direction.x = 1
-                self.status = 'right'
-            elif keys[pygame.K_LEFT] or keys[pygame.K_q]:
-                self.direction.x = -1
-                self.status = 'left'
-            else:
-                self.direction.x = 0
 
             #attack input
             if keys[pygame.K_SPACE]:
@@ -144,8 +143,8 @@ class Player(Entity):
                 self.status += '_idle'
 
         if self.attacking:
-            self.direction.x = 0
-            self.direction.y = 0
+            #self.direction.x = 0
+            #self.direction.y = 0
             if not 'attack' in self.status:
                 if 'idle' in self.status:
                     self.status = self.status.replace('idle','attack')

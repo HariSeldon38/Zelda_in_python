@@ -108,6 +108,10 @@ Game design ideas :
             
             def compute path ; method to calc how to get back
             [18:49, 31/07/2025] Antoine: find a way to not make them micmic when I attack
+            
+            one temple need you to take dw all the enemies of the map. After that they will spawn naturally. (strenght temple, basic one, with masses.
+            
+            
 
 
 Technical ideas : solve bug, improve quality of life, refactor, game feel etc ect
@@ -115,4 +119,12 @@ Technical ideas : solve bug, improve quality of life, refactor, game feel etc ec
  - sound enabled by type
  - weapon must flicker too
  - need to set volume attack indep of the monster
+  - son attack des squid s'entend pas
+ - need to change dir of attacks and placement when move change direction while attacking
+    in move method : if attacks sprite : move it should not be difficult imo
+ - attack diag(regarder si png dispo)
+ - TP close distance (half healing effect)
+ -découpler timer attack et magie, baisser timer attack et ajouter un timer entre les attaques
+ - l'annimation de magie doit suivre le perso mais cette de flame non c'est bon
+ - maybe could use import_folder in order to load all weapon images but need also name of the file so should return a dict instead of a list... idk
 """
