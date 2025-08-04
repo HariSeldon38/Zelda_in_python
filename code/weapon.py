@@ -1,18 +1,19 @@
 import pygame
+from support import import_folder_with_names
 
 class Weapon(pygame.sprite.Sprite):
+
+    all_weapons_images = {} #store images after they have been loaded (ie when first using a weapon)
+
     def __init__(self, player,groups):
         super().__init__(groups)
         self.sprite_type = 'weapon'
         self.player = player
-        #load all images
-        base_path = f'../graphics/weapons/{player.weapon}'
-        self.images = {
-            'right': pygame.image.load(f'{base_path}/right.png').convert_alpha(),
-            'left': pygame.image.load(f'{base_path}/left.png').convert_alpha(),
-            'up': pygame.image.load(f'{base_path}/up.png').convert_alpha(),
-            'down': pygame.image.load(f'{base_path}/down.png').convert_alpha()}
+        if player.weapon not in Weapon.all_weapons_images:
+            path  = f'../graphics/weapons/{player.weapon}'
+            Weapon.all_weapons_images[player.weapon] = import_folder_with_names(path)
 
+        self.images = self.all_weapons_images[player.weapon]
         self.direction = player.status.split("_")[0]
         self.image = self.images[self.direction]
         #placement
@@ -40,8 +41,6 @@ class Weapon(pygame.sprite.Sprite):
         if new_direction != self.direction:
             self.direction = new_direction
             self.image = self.images[self.direction]
-            self.update_position()
-        else:
-            # Just reposition without changing image
-            self.update_position()
+        self.update_position()
+
 
